@@ -1,7 +1,11 @@
 package fr.polytech.hibernate.tp10.model;
 
 import fr.polytech.hibernate.base.Controlled;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * Created by Thomas Couchoud (MrCraftCod - zerderr@gmail.com) on 20/11/2017.
@@ -12,7 +16,7 @@ import javax.persistence.*;
 @Entity
 @Table
 @Controlled
-public class Container
+public class Container implements Serializable
 {
 	private int capacity;
 	

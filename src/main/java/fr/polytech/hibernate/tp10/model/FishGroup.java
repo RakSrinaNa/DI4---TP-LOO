@@ -2,6 +2,7 @@ package fr.polytech.hibernate.tp10.model;
 
 import fr.polytech.hibernate.base.Controlled;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 @Entity
 @Table
 @Controlled
-public class FishGroup
+public class FishGroup implements Serializable
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

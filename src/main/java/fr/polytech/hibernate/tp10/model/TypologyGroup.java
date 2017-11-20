@@ -2,6 +2,7 @@ package fr.polytech.hibernate.tp10.model;
 
 import fr.polytech.hibernate.base.Controlled;
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Thomas Couchoud (MrCraftCod - zerderr@gmail.com) on 20/11/2017.
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Entity
 @Table
 @Controlled
-public class TypologyGroup
+public class TypologyGroup implements Serializable
 {
 	@Id
 	@OneToOne(targetEntity = FishGroup.class)

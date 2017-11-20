@@ -2,6 +2,7 @@ package fr.polytech.hibernate.tp10.model;
 
 import fr.polytech.hibernate.base.Controlled;
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Created by Thomas Couchoud (MrCraftCod - zerderr@gmail.com) on 20/11/2017.
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Table
 @Inheritance(strategy = InheritanceType.JOINED)
 @Controlled
-public class Typology
+public class Typology implements Serializable
 {
 	@Id
 	@Column

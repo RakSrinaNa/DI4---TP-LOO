@@ -5,6 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * Created by Thomas Couchoud (MrCraftCod - zerderr@gmail.com) on 20/11/2017.
@@ -16,7 +17,7 @@ import javax.persistence.Table;
 @Table
 @PrimaryKeyJoinColumn(name = "species")
 @Controlled
-public class GroundTypology extends Typology
+public class GroundTypology extends Typology implements Serializable
 {
 	@Column
 	private String groundMaterial;
