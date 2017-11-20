@@ -10,3 +10,5 @@ src/main/java/fr/polytech/hibernate/tp7
 persistence.xml
 .project
 .settings/org.eclipse.m2e.core.prefs
+.classpath
+.settings/
