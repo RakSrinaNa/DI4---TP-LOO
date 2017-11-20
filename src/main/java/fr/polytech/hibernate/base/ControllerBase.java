@@ -36,9 +36,9 @@ public abstract class ControllerBase
 	
 	public void persistObject(Object persistant)
 	{
+		Transaction tr = session.getTransaction();
 		try
 		{
-			Transaction tr = session.getTransaction();
 			tr.begin();
 			
 			session.persist(persistant);
@@ -47,7 +47,8 @@ public abstract class ControllerBase
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			System.out.println("ERROR: " + e .getMessage());
+			tr.rollback();
 		}
 	}
 	

@@ -26,14 +26,11 @@ public class TypologyGroup implements Serializable
 	@Column
 	private int count;
 	
-	public TypologyGroup(FishGroup group, Typology typology, int count)
+	public TypologyGroup(Typology typology, int count)
 	{
-		this.group = group;
 		this.typology = typology;
 		this.count = count;
 	}
-	
-	public TypologyGroup(){}
 	
 	public FishGroup getGroup()
 	{

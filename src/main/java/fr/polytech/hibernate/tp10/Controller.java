@@ -24,21 +24,19 @@ public class Controller extends ControllerBase
 	
 	public void setClientAddress(Client c, Address a)
 	{
-		persistObject(c);
 		persistObject(a);
 		makeChanges(() -> c.setAddress(a));
 	}
 	
 	public void addClientFishGroup(Client c, FishGroup g)
 	{
-		persistObject(c);
 		persistObject(g);
 		for(TypologyGroup tg : g.getGroups())
-		{
-			persistObject(tg.getTypology());
 			persistObject(tg);
-		}
-		makeChanges(() -> c.addFishGroup(g));
+		makeChanges(() -> {
+			c.addFishGroup(g);
+			g.setOwner(c);
+		});
 	}
 	
 	public void addTypology(Typology t)
@@ -49,6 +47,20 @@ public class Controller extends ControllerBase
 	public void addContainer(Container c)
 	{
 		persistObject(c);
+	}
+	
+	public void addClient(Client c)
+	{
+		persistObject(c);
+	}
+	
+	public void addTypologyGroupToFishGroup(FishGroup f, TypologyGroup t)
+	{
+		persistObject(t);
+		makeChanges(() -> {
+			f.addTypologyGroup(t);
+			t.setGroup(f);
+		});
 	}
 	
 	@Override

@@ -34,16 +34,20 @@ public class FishGroup implements Serializable
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = TypologyGroup.class)
 	private List<TypologyGroup> groups;
 	
-	public FishGroup(int mealPerDay, Client owner)
+	public FishGroup(int mealPerDay)
 	{
 		this.mealPerDay = mealPerDay;
-		this.owner = owner;
 		this.groups = new LinkedList<>();
 	}
 	
 	public FishGroup()
 	{
 		this.groups = new LinkedList<>();
+	}
+	
+	public void addTypologyGroup(TypologyGroup t)
+	{
+		groups.add(t);
 	}
 	
 	public int getMealPerDay()
