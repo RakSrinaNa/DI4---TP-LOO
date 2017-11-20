@@ -29,6 +29,11 @@ public abstract class ControllerBase
 	private final Session session;
 	private final SessionFactory sessionFactory;
 	
+	public <T> List<T> getElements(Class<T> klass)
+	{
+		return session.createCriteria(klass).list();
+	}
+	
 	public void persistObject(Object persistant)
 	{
 		try
