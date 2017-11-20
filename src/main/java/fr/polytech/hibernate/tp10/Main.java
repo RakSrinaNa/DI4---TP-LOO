@@ -12,7 +12,8 @@ public class Main
 {
 	public static void main(String[] args)
 	{
-		MainWindow mw = new MainWindow();
+		Controller c = new Controller();
+		MainWindow mw = new MainWindow(c);
 		mw.setVisible(true);
 	}
 }

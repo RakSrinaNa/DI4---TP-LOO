@@ -3,7 +3,12 @@ package fr.polytech.hibernate.tp10.view;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.BoxLayout;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
+import fr.polytech.hibernate.tp10.Controller;
 
 public class MainWindow extends JFrame implements ActionListener {
 
@@ -12,7 +17,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	JTabbedPane tabs;
 	TabClients tabClients;
 
-	public MainWindow() {
+	public MainWindow(Controller c) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(800, 600);
 		setTitle("Test");
