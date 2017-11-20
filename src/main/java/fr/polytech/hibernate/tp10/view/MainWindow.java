@@ -27,7 +27,7 @@ public class MainWindow extends JFrame implements ActionListener {
 		
 		
 		tabs = new JTabbedPane();
-		tabClients = new TabClients();
+		tabClients = new TabClients(c);
 		tabs.addTab("Clients", tabClients);
 		
 		mainPanel.add(tabs);
