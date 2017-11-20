@@ -1,0 +1,10 @@
+TP.iml
+.idea
+target
+src/main/java/fr/polytech/jdbc
+src/main/java/fr/polytech/hibernate/tp9
+src/main/java/fr/polytech/hibernate/tp8
+src/main/java/fr/polytech/hibernate/tp7_2
+src/main/java/fr/polytech/hibernate/tp6
+src/main/java/fr/polytech/hibernate/tp7
+persistence.xml
