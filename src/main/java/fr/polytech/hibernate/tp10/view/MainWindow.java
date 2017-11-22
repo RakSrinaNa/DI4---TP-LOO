@@ -16,6 +16,7 @@ public class MainWindow extends JFrame implements ActionListener {
 	
 	JTabbedPane tabs;
 	TabClients tabClients;
+	TabTypology tabTypos;
 
 	public MainWindow(Controller c) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -29,6 +30,8 @@ public class MainWindow extends JFrame implements ActionListener {
 		tabs = new JTabbedPane();
 		tabClients = new TabClients(c);
 		tabs.addTab("Clients", tabClients);
+		tabTypos = new TabTypology(c);
+		tabs.addTab("Typologies", tabTypos);
 		
 		mainPanel.add(tabs);
 		setContentPane(mainPanel);
