@@ -23,7 +23,7 @@ public class Main
 	{
 		Client client1 = new Client("Jean Bon", "0123456789");
 		controller.addClient(client1);
-		controller.setClientAddress(client1, new Address("22 Rue de la chance", "", "12345", "Ville", "France"));
+		controller.setClientAddress(client1, new Address("22 Rue de la chance", "Ville", "Poitou-Charentes", "12345", "France"));
 		
 		Container container1 = new Container(10, "verre");
 		controller.addContainer(container1);

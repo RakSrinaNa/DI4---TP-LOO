@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.table.AbstractTableModel;
 
 import fr.polytech.hibernate.tp10.Controller;
+import fr.polytech.hibernate.tp10.model.Address;
 import fr.polytech.hibernate.tp10.model.Client;
 
 public class ClientTableModel extends AbstractTableModel {
@@ -40,7 +41,8 @@ public class ClientTableModel extends AbstractTableModel {
 		case 1:
 			return clients.get(rowIndex).getName();
 		case 2:
-			return clients.get(rowIndex).getAddress();
+			Address a = clients.get(rowIndex).getAddress();
+			return a.getStreet() + ", " + a.getPostalCode() + " " + a.getCity() + ", " + a.getState() + " " + a.getCountry();
 		case 3:
 			return clients.get(rowIndex).getPhone();
 		default:
