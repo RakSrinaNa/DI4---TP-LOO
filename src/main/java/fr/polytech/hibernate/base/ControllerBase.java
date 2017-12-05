@@ -98,7 +98,7 @@ public abstract class ControllerBase
 			Configuration configuration = new Configuration().configure();
 			for(Class c : getAnnotatedClasses())
 			{
-				System.out.println("Adding class " + c.getName() + " to the controller.");
+				System.out.println("Adding class " + c.getName() + " to the model.");
 				configuration.addAnnotatedClass(c);
 			}
 			return configuration.buildSessionFactory();
