@@ -1,8 +1,11 @@
 package fr.polytech.hibernate.tp11.view;
 
+import fr.polytech.hibernate.tp11.Controller;
+import fr.polytech.hibernate.tp11.view.model.UserTab;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
@@ -14,6 +17,8 @@ import javafx.stage.Stage;
  */
 public class MainApplication extends Application
 {
+	private Controller controller;
+	
 	public static void main(String[] args)
 	{
 		launch(args);
@@ -22,9 +27,14 @@ public class MainApplication extends Application
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
+		controller = new Controller();
+		controller.populateSome();
+		
 		primaryStage.setScene(createScene());
 		primaryStage.setTitle("Hibernate");
 		primaryStage.sizeToScene();
+		primaryStage.setOnCloseRequest(evt -> controller.close());
+		primaryStage.show();
 	}
 	
 	private Scene createScene()
@@ -34,6 +44,9 @@ public class MainApplication extends Application
 	
 	private Parent createContent()
 	{
-		return new StackPane();
+		TabPane tabs = new TabPane();
+		tabs.getTabs().addAll(new UserTab(controller));
+		tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+		return new StackPane(tabs);
 	}
 }

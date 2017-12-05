@@ -16,26 +16,35 @@ import java.time.LocalDateTime;
 @Entity
 @Table
 @Controlled
+@Access(value = AccessType.PROPERTY)
 public class Post implements Serializable
 {
+	private static final long serialVersionUID = -3182398014280731646L;
+	
 	@Column
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public int getID()
+	{
+		return ID;
+	}
+	
+	public void setID(int ID)
+	{
+		this.ID = ID;
+	}
+	
 	private int ID;
 	
-	@Transient
 	private SimpleObjectProperty<User> author;
 	
-	@Transient
 	private SimpleStringProperty content;
 	
-	@Transient
 	private SimpleStringProperty title;
 	
-	@Transient
 	private SimpleObjectProperty<LocalDateTime> date;
 	
-	@Column
+	@OneToOne(targetEntity = User.class)
 	public User getAuthor()
 	{
 		return author.get();

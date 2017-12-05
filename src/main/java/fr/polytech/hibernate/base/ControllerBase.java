@@ -41,7 +41,7 @@ public abstract class ControllerBase
 		{
 			tr.begin();
 			
-			session.persist(persistant);
+			session.saveOrUpdate(persistant);
 			
 			tr.commit();
 		}
@@ -49,6 +49,38 @@ public abstract class ControllerBase
 		{
 			System.out.println("ERROR: " + e .getMessage());
 			tr.rollback();
+		}
+	}
+	
+	public <T> List<T> getAllObject(Class<T> klass)
+	{
+		List<T> list = new ArrayList<>();
+		try
+		{
+			list.addAll(session.createCriteria(klass).list());
+		}
+		catch(Exception e)
+		{
+			System.out.println("ERROR: " + e .getMessage());
+		}
+		return list;
+	}
+	
+	protected void updateObject(Object o)
+	{
+		try
+		{
+			Transaction tr = session.getTransaction();
+			tr.begin();
+			
+			Object mergedO = session.merge(o);
+			session.saveOrUpdate(mergedO);
+			
+			tr.commit();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 	}
 	

@@ -6,6 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * Created by Thomas Couchoud (MrCraftCod - zerderr@gmail.com) on 05/12/2017.
@@ -16,31 +17,50 @@ import java.util.List;
 @Entity
 @Table
 @Controlled
+@Access(value = AccessType.PROPERTY)
 public class User implements Serializable
 {
+	public void setID(int ID)
+	{
+		this.ID = ID;
+	}
+	
 	@Id
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public int getID()
+	{
+		return ID;
+	}
+	
+	private static final long serialVersionUID = -5713444165550083714L;
+	
 	private int ID;
 	
-	@Transient
 	private SimpleStringProperty firstname;
 	
-	@Transient
 	private SimpleStringProperty lastname;
 	
-	@Transient
 	private SimpleObjectProperty<Address> address;
 	
-	@Transient
 	private SimpleStringProperty mail;
 	
-	@Transient
 	private SimpleStringProperty password;
 	
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Post.class)
 	private List<Post> posts;
 	
+	public User(String firstname, String lastname, Address address, String mail, String password)
+	{
+		this.firstname = new SimpleStringProperty(firstname);
+		this.lastname = new SimpleStringProperty(lastname);
+		this.address = new SimpleObjectProperty<>(address);
+		this.mail = new SimpleStringProperty(mail);
+		this.password = new SimpleStringProperty(password);
+	}
+	
+	public User(){}
+	
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Post.class)
 	public List<Post> getPosts()
 	{
 		return posts;
@@ -83,7 +103,6 @@ public class User implements Serializable
 		this.lastname.set(lastname);
 	}
 	
-	@Column
 	@OneToOne(targetEntity = Address.class)
 	public Address getAddress()
 	{
@@ -130,5 +149,17 @@ public class User implements Serializable
 	public void setPassword(String password)
 	{
 		this.password.set(password);
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE);
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		return obj instanceof User && getID() == ((User)obj).getID();
 	}
 }

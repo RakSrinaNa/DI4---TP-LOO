@@ -14,27 +14,21 @@ import java.io.Serializable;
 @Entity
 @Table
 @Controlled
+@Access(value = AccessType.PROPERTY)
 public class Address implements Serializable
 {
 	private static final long serialVersionUID = -7246599347595137343L;
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column
+	
 	private int ID;
 	
-	@Transient
 	private SimpleStringProperty postalCode;
 	
-	@Transient
 	private SimpleStringProperty city;
 	
-	@Transient
 	private SimpleStringProperty street;
 	
-	@Transient
 	private SimpleStringProperty state;
 	
-	@Transient
 	private SimpleStringProperty country;
 	
 	public Address(String street, String city, String state, String postalCode, String country)
@@ -48,6 +42,14 @@ public class Address implements Serializable
 	
 	public Address(){}
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column
+	public int getID()
+	{
+		return ID;
+	}
+	
 	@Column
 	public String getPostalCode()
 	{
@@ -57,6 +59,11 @@ public class Address implements Serializable
 	public SimpleStringProperty postalCodeProperty()
 	{
 		return postalCode;
+	}
+	
+	public void setID(int ID)
+	{
+		this.ID = ID;
 	}
 	
 	public void setPostalCode(String postalCode)
@@ -126,5 +133,11 @@ public class Address implements Serializable
 	public void setCountry(String country)
 	{
 		this.country.set(country);
+	}
+	
+	@Override
+	public String toString()
+	{
+		return getStreet() + ", " + getPostalCode() + " " + getCity() + ", " + getState() + " " + getCountry();
 	}
 }
