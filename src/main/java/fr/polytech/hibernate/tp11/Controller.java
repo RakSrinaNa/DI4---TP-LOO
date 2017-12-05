@@ -37,15 +37,13 @@ public class Controller extends ControllerBase
 	
 	private void addUser(User user)
 	{
-		persistObject(user.getAddress());
 		persistObject(user);
 		users.add(user);
 	}
 	
 	public void onUserChanged(User user)
 	{
-		persistObject(user.getAddress());
-		persistObject(user);
+		updateObject(user);
 	}
 	
 	public ObservableList<User> getUsers()
