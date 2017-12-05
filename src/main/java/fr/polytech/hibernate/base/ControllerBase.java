@@ -29,6 +29,14 @@ public abstract class ControllerBase
 	private final Session session;
 	private final SessionFactory sessionFactory;
 	
+	protected ControllerBase() throws IllegalStateException
+	{
+		sessionFactory = getSessionFactory();
+		if(sessionFactory == null)
+			throw new IllegalStateException("Couldn't create sessionFactory");
+		session = sessionFactory.openSession();
+	}
+	
 	public <T> List<T> getElements(Class<T> klass)
 	{
 		return session.createCriteria(klass).list();
@@ -36,6 +44,8 @@ public abstract class ControllerBase
 	
 	public void persistObject(Object persistant)
 	{
+		if(persistant == null)
+			return;
 		Transaction tr = session.getTransaction();
 		try
 		{
@@ -73,8 +83,7 @@ public abstract class ControllerBase
 			Transaction tr = session.getTransaction();
 			tr.begin();
 			
-			Object mergedO = session.merge(o);
-			session.saveOrUpdate(mergedO);
+			session.saveOrUpdate(o);
 			
 			tr.commit();
 		}
@@ -123,38 +132,6 @@ public abstract class ControllerBase
 		return session.createQuery(query).getResultList();
 	}
 	
-	private SessionFactory getSessionFactory()
-	{
-		try
-		{
-			Configuration configuration = new Configuration().configure();
-			for(Class c : getAnnotatedClasses())
-			{
-				System.out.println("Adding class " + c.getName() + " to the model.");
-				configuration.addAnnotatedClass(c);
-			}
-			return configuration.buildSessionFactory();
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-			System.exit(1);
-		}
-		return null;
-	}
-	
-	protected abstract String getPackage();
-	
-	private Iterable<Class> getAnnotatedClasses() throws URISyntaxException, IOException, ClassNotFoundException
-	{
-		List<Class> classes = getClasses(getPackage());
-		Iterator<Class> it = classes.iterator();
-		while(it.hasNext())
-			if(!it.next().isAnnotationPresent(Controlled.class))
-				it.remove();
-		return classes;
-	}
-	
 	private List<Class> getClasses(String packageName) throws ClassNotFoundException, IOException, URISyntaxException
 	{
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -187,17 +164,41 @@ public abstract class ControllerBase
 		return classes;
 	}
 	
-	protected ControllerBase() throws IllegalStateException
-	{
-		sessionFactory = getSessionFactory();
-		if(sessionFactory == null)
-			throw new IllegalStateException("Couldn't create sessionFactory");
-		session = sessionFactory.openSession();
-	}
-	
 	public void close()
 	{
 		session.close();
 		sessionFactory.close();
+	}
+	
+	private Iterable<Class> getAnnotatedClasses() throws URISyntaxException, IOException, ClassNotFoundException
+	{
+		List<Class> classes = getClasses(getPackage());
+		Iterator<Class> it = classes.iterator();
+		while(it.hasNext())
+			if(!it.next().isAnnotationPresent(Controlled.class))
+				it.remove();
+		return classes;
+	}
+	
+	protected abstract String getPackage();
+	
+	private SessionFactory getSessionFactory()
+	{
+		try
+		{
+			Configuration configuration = new Configuration().configure();
+			for(Class c : getAnnotatedClasses())
+			{
+				System.out.println("Adding class " + c.getName() + " to the model.");
+				configuration.addAnnotatedClass(c);
+			}
+			return configuration.buildSessionFactory();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			System.exit(1);
+		}
+		return null;
 	}
 }
