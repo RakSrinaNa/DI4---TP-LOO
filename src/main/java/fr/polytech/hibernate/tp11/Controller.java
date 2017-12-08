@@ -2,6 +2,7 @@ package fr.polytech.hibernate.tp11;
 
 import fr.polytech.hibernate.base.ControllerBase;
 import fr.polytech.hibernate.tp11.model.Address;
+import fr.polytech.hibernate.tp11.model.Post;
 import fr.polytech.hibernate.tp11.model.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,12 +16,15 @@ import javafx.collections.ObservableList;
 public class Controller extends ControllerBase
 {
 	private final ObservableList<User> users;
+	private final ObservableList<Post> posts;
 	
 	public Controller() throws IllegalStateException
 	{
 		super();
 		users = FXCollections.observableArrayList();
 		users.addAll(getAllObject(User.class));
+		posts = FXCollections.observableArrayList();
+		posts.addAll(getAllObject(Post.class));
 	}
 	
 	public void populateSome()
@@ -41,9 +45,25 @@ public class Controller extends ControllerBase
 		users.add(user);
 	}
 	
+	private void addPost(Post post)
+	{
+		persistObject(post);
+		posts.add(post);
+	}
+	
 	public void onUserChanged(User user)
 	{
 		updateObject(user);
+	}
+	
+	public void onPostChanged(Post post)
+	{
+		updateObject(post);
+	}
+	
+	public ObservableList<Post> getPosts()
+	{
+		return posts;
 	}
 	
 	public ObservableList<User> getUsers()

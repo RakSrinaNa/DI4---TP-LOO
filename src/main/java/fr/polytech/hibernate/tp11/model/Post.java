@@ -1,9 +1,8 @@
 package fr.polytech.hibernate.tp11.model;
 
 import fr.polytech.hibernate.base.Controlled;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.*;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -14,14 +13,13 @@ import java.time.LocalDateTime;
  * @since 2017-12-05
  */
 @Entity
-@Table
 @Controlled
 @Access(value = AccessType.PROPERTY)
 public class Post implements Serializable
 {
 	private static final long serialVersionUID = -3182398014280731646L;
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	
-	@Column
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int getID()
@@ -36,75 +34,60 @@ public class Post implements Serializable
 	
 	private int ID;
 	
-	private SimpleObjectProperty<User> author;
+	private User author;
 	
-	private SimpleStringProperty content;
+	private String content;
 	
-	private SimpleStringProperty title;
+	private String title;
 	
-	private SimpleObjectProperty<LocalDateTime> date;
+	private LocalDateTime date;
 	
 	@OneToOne(targetEntity = User.class)
 	public User getAuthor()
-	{
-		return author.get();
-	}
-	
-	public SimpleObjectProperty<User> authorProperty()
 	{
 		return author;
 	}
 	
 	public void setAuthor(User author)
 	{
-		this.author.set(author);
+		User old = this.author;
+		this.author = author;
+		pcs.firePropertyChange("author", old, author);
 	}
 	
-	@Column
 	public String getContent()
-	{
-		return content.get();
-	}
-	
-	public SimpleStringProperty contentProperty()
 	{
 		return content;
 	}
 	
 	public void setContent(String content)
 	{
-		this.content.set(content);
+		String old = this.content;
+		this.content = content;
+		pcs.firePropertyChange("content", old, content);
 	}
 	
-	@Column
 	public String getTitle()
-	{
-		return title.get();
-	}
-	
-	public SimpleStringProperty titleProperty()
 	{
 		return title;
 	}
 	
 	public void setTitle(String title)
 	{
-		this.title.set(title);
+		String old = this.title;
+		this.title = title;
+		pcs.firePropertyChange("title", old, title);
 	}
 	
-	@Column
 	public LocalDateTime getDate()
-	{
-		return date.get();
-	}
-	
-	public SimpleObjectProperty<LocalDateTime> dateProperty()
 	{
 		return date;
 	}
 	
 	public void setDate(LocalDateTime date)
 	{
-		this.date.set(date);
+		LocalDateTime old = this.date;
+		this.date = date;
+		pcs.firePropertyChange("date", old, date);
 	}
 }

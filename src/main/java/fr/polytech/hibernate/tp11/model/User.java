@@ -19,7 +19,6 @@ import java.util.List;
 @Entity
 @Controlled
 @Access(value = AccessType.PROPERTY)
-@PersistenceContext(type = PersistenceContextType.EXTENDED)
 public class User implements Externalizable
 {
 	private static final long serialVersionUID = -5713444165550083714L;
@@ -78,7 +77,6 @@ public class User implements Externalizable
 	}
 	
 	@Id
-	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int getID()
 	{
@@ -87,28 +85,26 @@ public class User implements Externalizable
 	
 	public void setID(int ID)
 	{
+		int old = this.ID;
 		this.ID = ID;
+		pcs.firePropertyChange("ID", old, ID);
 	}
 	
-	@Column
 	public String getFirstname()
 	{
 		return firstname;
 	}
 	
-	@Column
 	public String getLastname()
 	{
 		return lastname;
 	}
 	
-	@Column
 	public String getMail()
 	{
 		return mail;
 	}
 	
-	@Column
 	public String getPassword()
 	{
 		return password;
@@ -164,6 +160,12 @@ public class User implements Externalizable
 	@Override
 	public boolean equals(Object obj)
 	{
-		return super.equals(obj);//return obj instanceof User && getID() == ((User) obj).getID();
+		return obj instanceof User && getID() == ((User) obj).getID();
+	}
+	
+	@Override
+	public String toString()
+	{
+		return getFirstname() + " " + getLastname();
 	}
 }

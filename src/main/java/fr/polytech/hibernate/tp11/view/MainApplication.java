@@ -2,6 +2,7 @@ package fr.polytech.hibernate.tp11.view;
 
 import fr.polytech.hibernate.tp11.Controller;
 import fr.polytech.hibernate.tp11.view.model.UserTab;
+import fr.polytech.hibernate.tp11.view.post.PostTab;
 import javafx.application.Application;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -46,6 +47,7 @@ public class MainApplication extends Application
 	{
 		TabPane tabs = new TabPane();
 		tabs.getTabs().addAll(new UserTab(controller));
+		tabs.getTabs().addAll(new PostTab(controller));
 		tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 		return new StackPane(tabs);
 	}

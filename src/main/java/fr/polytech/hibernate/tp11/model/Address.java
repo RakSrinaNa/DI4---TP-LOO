@@ -1,8 +1,8 @@
 package fr.polytech.hibernate.tp11.model;
 
 import fr.polytech.hibernate.base.Controlled;
-import javafx.beans.property.SimpleStringProperty;
 import javax.persistence.*;
+import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 
 /**
@@ -12,127 +12,109 @@ import java.io.Serializable;
  * @since 2017-11-07
  */
 @Entity
-@Table
 @Controlled
 @Access(value = AccessType.PROPERTY)
 public class Address implements Serializable
 {
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
+	
 	private static final long serialVersionUID = -7246599347595137343L;
 	
 	private int ID;
 	
-	private SimpleStringProperty postalCode;
+	private String postalCode;
 	
-	private SimpleStringProperty city;
+	private String city;
 	
-	private SimpleStringProperty street;
+	private String street;
 	
-	private SimpleStringProperty state;
+	private String state;
 	
-	private SimpleStringProperty country;
+	private String country;
 	
 	public Address(String street, String city, String state, String postalCode, String country)
 	{
-		this.street = new SimpleStringProperty(street);
-		this.city = new SimpleStringProperty(city);
-		this.state = new SimpleStringProperty(state);
-		this.postalCode = new SimpleStringProperty(postalCode);
-		this.country = new SimpleStringProperty(country);
+		this.street = street;
+		this.city = city;
+		this.state = state;
+		this.postalCode = postalCode;
+		this.country = country;
 	}
 	
 	public Address(){}
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column
 	public int getID()
 	{
 		return ID;
 	}
 	
-	@Column
-	public String getPostalCode()
+	public void setID(int ID)
 	{
-		return postalCode.get();
+		int old = this.ID;
+		this.ID = ID;
+		pcs.firePropertyChange("ID", old, ID);
 	}
 	
-	public SimpleStringProperty postalCodeProperty()
+	public String getPostalCode()
 	{
 		return postalCode;
 	}
 	
-	public void setID(int ID)
-	{
-		this.ID = ID;
-	}
-	
 	public void setPostalCode(String postalCode)
 	{
-		this.postalCode.set(postalCode);
+		String old = this.postalCode;
+		this.postalCode = postalCode;
+		pcs.firePropertyChange("postalCode", old, postalCode);
 	}
 	
-	@Column
 	public String getCity()
-	{
-		return city.get();
-	}
-	
-	public SimpleStringProperty cityProperty()
 	{
 		return city;
 	}
 	
 	public void setCity(String city)
 	{
-		this.city.set(city);
+		String old = this.city;
+		this.city = city;
+		pcs.firePropertyChange("city", old, city);
 	}
 	
-	@Column
 	public String getStreet()
-	{
-		return street.get();
-	}
-	
-	public SimpleStringProperty streetProperty()
 	{
 		return street;
 	}
 	
 	public void setStreet(String street)
 	{
-		this.street.set(street);
+		String old = this.street;
+		this.street = street;
+		pcs.firePropertyChange("street", old, street);
 	}
 	
-	@Column
 	public String getState()
-	{
-		return state.get();
-	}
-	
-	public SimpleStringProperty stateProperty()
 	{
 		return state;
 	}
 	
 	public void setState(String state)
 	{
-		this.state.set(state);
+		String old = this.state;
+		this.state = state;
+		pcs.firePropertyChange("state", old, state);
 	}
 	
-	@Column
 	public String getCountry()
-	{
-		return country.get();
-	}
-	
-	public SimpleStringProperty countryProperty()
 	{
 		return country;
 	}
 	
 	public void setCountry(String country)
 	{
-		this.country.set(country);
+		String old = this.country;
+		this.country = country;
+		pcs.firePropertyChange("country", old, country);
 	}
 	
 	@Override
