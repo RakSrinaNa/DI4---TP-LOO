@@ -1,21 +1,21 @@
 package fr.polytech.hibernate.base;
 
+import javafx.util.Pair;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.cfg.Configuration;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Thomas Couchoud (MrCraftCod - zerderr@gmail.com) on 09/11/2017.
@@ -93,6 +93,23 @@ public abstract class ControllerBase
 		}
 	}
 	
+	protected void deleteObject(Object o)
+	{
+		try
+		{
+			Transaction tr = session.getTransaction();
+			tr.begin();
+			
+			session.delete(o);
+			
+			tr.commit();
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+	
 	public void makeChanges(Runnable r)
 	{
 		try
@@ -112,12 +129,20 @@ public abstract class ControllerBase
 	
 	public <T> List<T> findEqual(Class<T> classType, String column, Object value)
 	{
+		ArrayList<Pair<String, Object>> constraints = new ArrayList<>();
+		constraints.add(new Pair<>(column, value));
+		return findEqual(classType, constraints);
+	}
+	
+	public <T> List<T> findEqual(Class<T> classType, Collection<Pair<String, Object>> constraints)
+	{
 		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
 		CriteriaQuery<T> classQuery = criteriaBuilder.createQuery(classType);
 		
 		Root<T> root = classQuery.from(classType);
-		CriteriaQuery<T> query = classQuery.where(criteriaBuilder.equal(root.get(column), value));
+		List<Predicate> predicates = constraints.stream().map(constraint -> criteriaBuilder.equal(root.get(constraint.getKey()), constraint.getValue())).collect(Collectors.toList());
 		
+		CriteriaQuery<T> query = classQuery.select(root).where(predicates.toArray(new Predicate[]{}));
 		return session.createQuery(query).getResultList();
 	}
 	

@@ -1,13 +1,11 @@
 package fr.polytech.hibernate.tp11.view;
 
 import fr.polytech.hibernate.tp11.Controller;
-import fr.polytech.hibernate.tp11.view.model.UserTab;
-import fr.polytech.hibernate.tp11.view.post.PostTab;
+import fr.polytech.hibernate.tp11.view.scenes.ApplicationScene;
+import fr.polytech.hibernate.tp11.view.scenes.LoginScene;
 import javafx.application.Application;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.TabPane;
-import javafx.scene.layout.StackPane;
+import javafx.geometry.Rectangle2D;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 /**
@@ -31,24 +29,24 @@ public class MainApplication extends Application
 		controller = new Controller();
 		controller.populateSome();
 		
-		primaryStage.setScene(createScene());
+		LoginScene loginScene = new LoginScene(controller);
+		loginScene.setOnLoggedIn(user -> {
+			ApplicationScene applicationScene = new ApplicationScene(controller, user);
+			primaryStage.setScene(applicationScene);
+			primaryStage.setResizable(true);
+			Screen screen = Screen.getPrimary();
+			Rectangle2D bounds = screen.getVisualBounds();
+			primaryStage.setX(bounds.getMinX());
+			primaryStage.setY(bounds.getMinY());
+			primaryStage.setWidth(bounds.getWidth());
+			primaryStage.setHeight(bounds.getHeight());
+			primaryStage.setMaximized(true);
+		});
+		primaryStage.setScene(loginScene);
 		primaryStage.setTitle("Hibernate");
 		primaryStage.sizeToScene();
+		primaryStage.setResizable(false);
 		primaryStage.setOnCloseRequest(evt -> controller.close());
 		primaryStage.show();
-	}
-	
-	private Scene createScene()
-	{
-		return new Scene(createContent());
-	}
-	
-	private Parent createContent()
-	{
-		TabPane tabs = new TabPane();
-		tabs.getTabs().addAll(new UserTab(controller));
-		tabs.getTabs().addAll(new PostTab(controller));
-		tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
-		return new StackPane(tabs);
 	}
 }

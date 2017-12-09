@@ -1,4 +1,4 @@
-package fr.polytech.hibernate.tp11.view.model;
+package fr.polytech.hibernate.tp11.view.user;
 
 import fr.polytech.hibernate.tp11.Controller;
 import fr.polytech.hibernate.tp11.model.Address;
@@ -24,14 +24,43 @@ class UserTable extends SortedTableView<User>
 {
 	private static final Pattern VALID_EMAIL = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)])"); //http://www.ietf.org/rfc/rfc5322.txt
 	
-	UserTable(Controller controller)
+	UserTable(Controller controller, User user)
 	{
 		super();
 		setEditable(true);
 		
-		int colCount = 5;
+		int colCount = 6;
 		int padding = 2;
 		
+		TableColumn<User, String> usernameColumn = new TableColumn<>("Username");
+		usernameColumn.setCellValueFactory(cellData -> {
+			try
+			{
+				return JavaBeanStringPropertyBuilder.create().bean(cellData.getValue()).name("username").build();
+			}
+			catch(Exception e)
+			{
+				System.out.println("Error building table:");
+				e.printStackTrace();
+				System.exit(1);
+			}
+			return new SimpleStringProperty();
+		});
+		usernameColumn.setEditable(true);
+		usernameColumn.setCellFactory(list -> new StringTextFieldTableCell<>());
+		usernameColumn.prefWidthProperty().bind(widthProperty().subtract(padding).divide(colCount));
+		usernameColumn.setOnEditCommit(evt -> {
+			if(evt.getRowValue().equals(user) && evt.getNewValue() != null && !evt.getNewValue().equals(""))
+			{
+				evt.getRowValue().setUsername(evt.getNewValue());
+				controller.onUserChanged(evt.getRowValue());
+			}
+			else //Refresh window
+			{
+				evt.getTableView().getColumns().get(0).setVisible(false);
+				evt.getTableView().getColumns().get(0).setVisible(true);
+			}
+		});
 		TableColumn<User, String> firstnameColumn = new TableColumn<>("Firstname");
 		firstnameColumn.setCellValueFactory(cellData -> {
 			try
@@ -50,7 +79,7 @@ class UserTable extends SortedTableView<User>
 		firstnameColumn.setCellFactory(list -> new StringTextFieldTableCell<>());
 		firstnameColumn.prefWidthProperty().bind(widthProperty().subtract(padding).divide(colCount));
 		firstnameColumn.setOnEditCommit(evt -> {
-			if(evt.getNewValue() != null && !evt.getNewValue().equals(""))
+			if(evt.getRowValue().equals(user) && evt.getNewValue() != null && !evt.getNewValue().equals(""))
 			{
 				evt.getRowValue().setFirstname(evt.getNewValue());
 				controller.onUserChanged(evt.getRowValue());
@@ -79,7 +108,7 @@ class UserTable extends SortedTableView<User>
 		lastnameColumn.setCellFactory(list -> new StringTextFieldTableCell<>());
 		lastnameColumn.prefWidthProperty().bind(widthProperty().subtract(padding).divide(colCount));
 		lastnameColumn.setOnEditCommit(evt -> {
-			if(evt.getNewValue() != null && !evt.getNewValue().equals(""))
+			if(evt.getRowValue().equals(user) && evt.getNewValue() != null && !evt.getNewValue().equals(""))
 			{
 				evt.getRowValue().setLastname(evt.getNewValue());
 				controller.onUserChanged(evt.getRowValue());
@@ -124,7 +153,7 @@ class UserTable extends SortedTableView<User>
 		mailColumn.setCellFactory(list -> new StringTextFieldTableCell<>());
 		mailColumn.prefWidthProperty().bind(widthProperty().subtract(padding).divide(colCount));
 		mailColumn.setOnEditCommit(evt -> {
-			if(evt.getNewValue() != null && !evt.getNewValue().equals("") && VALID_EMAIL.matcher(evt.getNewValue()).matches())
+			if(evt.getNewValue() != null && evt.getRowValue().equals(user) && !evt.getNewValue().equals("") && VALID_EMAIL.matcher(evt.getNewValue()).matches())
 			{
 				evt.getRowValue().setMail(evt.getNewValue());
 				controller.onUserChanged(evt.getRowValue());
@@ -150,10 +179,10 @@ class UserTable extends SortedTableView<User>
 			return new SimpleStringProperty();
 		});
 		passwordColumn.setEditable(true);
-		passwordColumn.setCellFactory(list -> new StringTextFieldTableCell<>());
+		passwordColumn.setCellFactory(list -> new PasswordTextFieldTableCell(user));
 		passwordColumn.prefWidthProperty().bind(widthProperty().subtract(padding).divide(colCount));
 		passwordColumn.setOnEditCommit(evt -> {
-			if(evt.getNewValue() != null && !evt.getNewValue().equals(""))
+			if(evt.getNewValue() != null && evt.getRowValue().equals(user) && !evt.getNewValue().equals(""))
 			{
 				evt.getRowValue().setPassword(evt.getNewValue());
 				controller.onUserChanged(evt.getRowValue());
@@ -166,7 +195,7 @@ class UserTable extends SortedTableView<User>
 		});
 		
 		//noinspection unchecked
-		getColumns().addAll(firstnameColumn, lastnameColumn, addressColumn, mailColumn, passwordColumn);
+		getColumns().addAll(usernameColumn, firstnameColumn, lastnameColumn, addressColumn, mailColumn, passwordColumn);
 		setList(controller.getUsers());
 		Platform.runLater(this::resizeContent);
 	}

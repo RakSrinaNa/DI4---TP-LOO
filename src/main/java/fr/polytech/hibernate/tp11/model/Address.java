@@ -16,20 +16,13 @@ import java.io.Serializable;
 @Access(value = AccessType.PROPERTY)
 public class Address implements Serializable
 {
-	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-	
 	private static final long serialVersionUID = -7246599347595137343L;
-	
+	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
 	private int ID;
-	
 	private String postalCode;
-	
 	private String city;
-	
 	private String street;
-	
 	private String state;
-	
 	private String country;
 	
 	public Address(String street, String city, String state, String postalCode, String country)
@@ -43,18 +36,15 @@ public class Address implements Serializable
 	
 	public Address(){}
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int getID()
+	@Override
+	public String toString()
 	{
-		return ID;
+		return getStreet() + ", " + getPostalCode() + " " + getCity() + ", " + getState() + " " + getCountry();
 	}
 	
-	public void setID(int ID)
+	public String getStreet()
 	{
-		int old = this.ID;
-		this.ID = ID;
-		pcs.firePropertyChange("ID", old, ID);
+		return street;
 	}
 	
 	public String getPostalCode()
@@ -81,18 +71,6 @@ public class Address implements Serializable
 		pcs.firePropertyChange("city", old, city);
 	}
 	
-	public String getStreet()
-	{
-		return street;
-	}
-	
-	public void setStreet(String street)
-	{
-		String old = this.street;
-		this.street = street;
-		pcs.firePropertyChange("street", old, street);
-	}
-	
 	public String getState()
 	{
 		return state;
@@ -117,9 +95,24 @@ public class Address implements Serializable
 		pcs.firePropertyChange("country", old, country);
 	}
 	
-	@Override
-	public String toString()
+	public void setStreet(String street)
 	{
-		return getStreet() + ", " + getPostalCode() + " " + getCity() + ", " + getState() + " " + getCountry();
+		String old = this.street;
+		this.street = street;
+		pcs.firePropertyChange("street", old, street);
+	}
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public int getID()
+	{
+		return ID;
+	}
+	
+	public void setID(int ID)
+	{
+		int old = this.ID;
+		this.ID = ID;
+		pcs.firePropertyChange("ID", old, ID);
 	}
 }

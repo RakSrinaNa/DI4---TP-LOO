@@ -26,13 +26,15 @@ public class User implements Externalizable
 	private final List<Post> posts;
 	private int ID;
 	private String firstname;
+	private String username;
 	private String lastname;
 	private Address address;
 	private String mail;
 	private String password;
 	
-	public User(String firstname, String lastname, Address address, String mail, String password)
+	public User(String username, String firstname, String lastname, Address address, String mail, String password)
 	{
+		this.username = username;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.address = address;
@@ -120,6 +122,7 @@ public class User implements Externalizable
 	{
 		this.posts.clear();
 		this.posts.addAll(posts);
+		pcs.firePropertyChange("posts", posts, posts);
 	}
 	
 	public void setPassword(String password)
@@ -157,6 +160,17 @@ public class User implements Externalizable
 		pcs.firePropertyChange("address", old, address);
 	}
 	
+	public void removePost(Post post)
+	{
+		posts.remove(post);
+		pcs.firePropertyChange("address", posts, posts);
+	}
+	
+	public void addPost(Post result)
+	{
+		posts.add(result);
+	}
+	
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -167,5 +181,17 @@ public class User implements Externalizable
 	public String toString()
 	{
 		return getFirstname() + " " + getLastname();
+	}
+	
+	public String getUsername()
+	{
+		return username;
+	}
+	
+	public void setUsername(String username)
+	{
+		String old = this.username;
+		this.username = username;
+		pcs.firePropertyChange("username", old, username);
 	}
 }
