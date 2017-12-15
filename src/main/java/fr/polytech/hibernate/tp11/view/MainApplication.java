@@ -42,6 +42,8 @@ public class MainApplication extends Application
 			primaryStage.setResizable(true);
 			Screen screen = Screen.getPrimary();
 			Rectangle2D bounds = screen.getVisualBounds();
+			primaryStage.setMinHeight(200);
+			primaryStage.setMinWidth(200);
 			primaryStage.setX(bounds.getMinX());
 			primaryStage.setY(bounds.getMinY());
 			primaryStage.setWidth(bounds.getWidth());
@@ -50,8 +52,6 @@ public class MainApplication extends Application
 		});
 		primaryStage.getIcons().add(getIcon());
 		primaryStage.setScene(loginScene);
-		primaryStage.setMinHeight(200);
-		primaryStage.setMinWidth(200);
 		primaryStage.setTitle("Blogos");
 		primaryStage.sizeToScene();
 		primaryStage.setResizable(false);
