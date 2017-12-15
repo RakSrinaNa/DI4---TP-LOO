@@ -177,7 +177,10 @@ class PostTable extends SortedTableView<Post>
 					MenuItem menuDelete = new MenuItem("Delete post");
 					
 					menuMore.setOnAction(evt1 -> blogController.infosPost(this, row.getItem()));
-					menuModify.setOnAction(evt1 -> blogController.modifyPost(evt, row.getItem()));
+					menuModify.setOnAction(evt1 -> {
+						blogController.modifyPost(evt, row.getItem());
+						refresh();
+					});
 					menuDelete.setOnAction(evt1 -> blogController.deletePost(row.getItem()));
 					
 					contextMenu.getItems().add(menuMore);
