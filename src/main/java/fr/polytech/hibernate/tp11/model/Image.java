@@ -17,11 +17,19 @@ public class Image
 	private int ID;
 	private String path;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param path The path to the image.
+	 */
 	public Image(String path)
 	{
 		this.path = path;
 	}
-	
+
+	/**
+	 * Constructor.
+	 */
 	public Image(){}
 	
 	@Override

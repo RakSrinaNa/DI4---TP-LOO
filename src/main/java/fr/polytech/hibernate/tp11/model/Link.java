@@ -19,14 +19,25 @@ public class Link
 	private String displayName;
 	private URL url;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param url The URL of the link.
+	 */
 	public Link(URL url)
 	{
 		this.url = url;
 		this.displayName = url.toString();
 	}
 	
+	/**
+	 * Constructor.
+	 */
 	public Link(){}
 	
+	/**
+	 * @return a string version of the link.
+	 */
 	@Override
 	public String toString()
 	{
