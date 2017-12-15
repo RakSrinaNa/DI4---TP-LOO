@@ -4,6 +4,7 @@ import fr.polytech.hibernate.tp11.BlogController;
 import fr.polytech.hibernate.tp11.model.Keyword;
 import fr.polytech.hibernate.tp11.model.Post;
 import fr.polytech.hibernate.tp11.model.User;
+import fr.polytech.hibernate.tp11.view.MainApplication;
 import fr.polytech.hibernate.tp11.view.utils.SortedTableView;
 import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
@@ -17,6 +18,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
+import javafx.scene.layout.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,8 +38,8 @@ class PostTable extends SortedTableView<Post>
 	{
 		super();
 		setEditable(false);
-		//getStylesheets().add("/jfx/table.css");
-		//setBackground(new Background(new BackgroundImage(MainApplication.getIcon("background.png"), BackgroundRepeat.ROUND, BackgroundRepeat.ROUND, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
+		getStylesheets().add("/jfx/table.css");
+		setBackground(new Background(new BackgroundImage(MainApplication.getIcon("background.png"), BackgroundRepeat.ROUND, BackgroundRepeat.ROUND, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
 		
 		filterRule = new SimpleObjectProperty<>(employee -> true);
 		
