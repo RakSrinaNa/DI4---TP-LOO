@@ -43,12 +43,12 @@ public class Controller extends ControllerBase
 	
 	public void populateSome()
 	{
-		Address a1 = new Address("16 Rue du pif", "City", "Poitou", "1", "USA");
-		User u1 = new User("a", "Jean", "Bon", a1, "jb@prout.fr", "pass");
+		Address a1 = new Address("16 Rue Jean Test", "Ville1", "Poitou-Charentes", "12345", "France");
+		User u1 = new User("a", "Jean", "Utilisateur", a1, "jean@test.fr", "pass");
 		addUser(u1);
 		
-		Address a2 = new Address("17 Rue du pif", "City", "Poitou", "1", "USA");
-		User u2 = new User("b", "Jane", "Bon", a2, "jb2@prout.fr", "pass");
+		Address a2 = new Address("14 Rue du test", "Ville2", "Limousin", "66666", "France");
+		User u2 = new User("b", "Pierre", "Test", a2, "pierre@exemple.fr", "pass");
 		addUser(u2);
 	}
 	
