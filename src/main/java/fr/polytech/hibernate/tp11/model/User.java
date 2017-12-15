@@ -32,6 +32,16 @@ public class User implements Externalizable
 	private String mail;
 	private String password;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param username The username of the user.
+	 * @param firstname The first name of the user.
+	 * @param lastname The last name of the user.
+	 * @param address The address of the user.
+	 * @param mail The e-mail address of the user.
+	 * @param password The password of the user.
+	 */
 	public User(String username, String firstname, String lastname, Address address, String mail, String password)
 	{
 		this.username = username;
@@ -43,11 +53,17 @@ public class User implements Externalizable
 		this.posts = new LinkedHashSet<>();
 	}
 	
+	/**
+	 * Constructor
+	 */
 	public User()
 	{
 		this.posts = new LinkedHashSet<>();
 	}
 	
+	/**
+	 * Serialization writer
+	 */
 	@Override
 	public void writeExternal(ObjectOutput out) throws IOException
 	{
@@ -60,6 +76,9 @@ public class User implements Externalizable
 		out.writeObject(getPosts());
 	}
 	
+	/**
+	 * Serialization reader
+	 */
 	@Override
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
 	{
@@ -171,12 +190,21 @@ public class User implements Externalizable
 		posts.add(result);
 	}
 	
+	/**
+	 * Checks if an object is equal to the user.
+	 * 
+	 * @param obj The object to compare.
+	 * @return true if the object equals the user, false otherwise.
+	 */
 	@Override
 	public boolean equals(Object obj)
 	{
 		return obj instanceof User && getID() == ((User) obj).getID();
 	}
 	
+	/**
+	 * @return a string version of the user.
+	 */
 	@Override
 	public String toString()
 	{

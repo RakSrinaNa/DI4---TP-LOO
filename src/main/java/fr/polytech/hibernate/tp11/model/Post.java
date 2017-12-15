@@ -30,6 +30,9 @@ public class Post implements Serializable
 	private Set<Link> links;
 	private Set<Image> images;
 	
+	/**
+	 * Constructor.
+	 */
 	public Post()
 	{
 		this.keywords = new LinkedHashSet<>();
@@ -37,36 +40,66 @@ public class Post implements Serializable
 		this.images = new LinkedHashSet<>();
 	}
 	
+	/**
+	 * Adds a keyword to the post.
+	 * 
+	 * @param keyword The keyword to add.
+	 */
 	public void addKeyword(Keyword keyword)
 	{
 		keywords.add(keyword);
 		pcs.firePropertyChange("keywords", keywords, keywords);
 	}
 	
+	/**
+	 * Removes a keyword from the post.
+	 * 
+	 * @param keyword The keyword to remove.
+	 */
 	public void removeKeyword(Keyword keyword)
 	{
 		keywords.remove(keyword);
 		pcs.firePropertyChange("keywords", keywords, keywords);
 	}
 	
+	/**
+	 * Adds a link to the post.
+	 * 
+	 * @param link The link to add.
+	 */
 	public void addLinks(Link link)
 	{
 		links.add(link);
 		pcs.firePropertyChange("links", links, links);
 	}
 	
+	/**
+	 * Removes a link from the post.
+	 * 
+	 * @param link The link to remove.
+	 */
 	public void removeLinks(Link link)
 	{
 		links.remove(link);
 		pcs.firePropertyChange("links", links, links);
 	}
 	
+	/**
+	 * Adds an image to the post.
+	 * 
+	 * @param image The image to add.
+	 */
 	public void addImages(Image image)
 	{
 		this.images.add(image);
 		pcs.firePropertyChange("images", images, images);
 	}
 	
+	/**
+	 * Removes an image from the post.
+	 * 
+	 * @param image The image to remove.
+	 */
 	public void removeImages(Image image)
 	{
 		this.images.remove(image);

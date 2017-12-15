@@ -25,6 +25,15 @@ public class Address implements Serializable
 	private String state;
 	private String country;
 	
+	/**
+	 * Constructor
+	 * 
+	 * @param street The street name, including the number.
+	 * @param city The city.
+	 * @param state The state.
+	 * @param postalCode The postal code.
+	 * @param country The country.
+	 */
 	public Address(String street, String city, String state, String postalCode, String country)
 	{
 		this.street = street;
@@ -33,9 +42,15 @@ public class Address implements Serializable
 		this.postalCode = postalCode;
 		this.country = country;
 	}
-	
+
+	/**
+	 * Constructor.
+	 */
 	public Address(){}
 	
+	/**
+	 * @return A string version of the address.
+	 */
 	@Override
 	public String toString()
 	{
