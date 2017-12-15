@@ -7,8 +7,8 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Created by Thomas Couchoud (MrCraftCod - zerderr@gmail.com) on 05/12/2017.
@@ -23,7 +23,7 @@ public class User implements Externalizable
 {
 	private static final long serialVersionUID = -5713444165550083714L;
 	private final PropertyChangeSupport pcs = new PropertyChangeSupport(this);
-	private final List<Post> posts;
+	private final Set<Post> posts;
 	private int ID;
 	private String firstname;
 	private String username;
@@ -40,12 +40,12 @@ public class User implements Externalizable
 		this.address = address;
 		this.mail = mail;
 		this.password = password;
-		this.posts = new ArrayList<>();
+		this.posts = new LinkedHashSet<>();
 	}
 	
 	public User()
 	{
-		this.posts = new ArrayList<>();
+		this.posts = new LinkedHashSet<>();
 	}
 	
 	@Override
@@ -69,7 +69,7 @@ public class User implements Externalizable
 		setLastname(in.readUTF());
 		setMail(in.readUTF());
 		setPassword(in.readUTF());
-		setPosts((List<Post>) in.readObject());
+		setPosts((Set<Post>) in.readObject());
 	}
 	
 	@OneToOne(targetEntity = Address.class, cascade = CascadeType.ALL)
@@ -113,12 +113,12 @@ public class User implements Externalizable
 	}
 	
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = Post.class)
-	public List<Post> getPosts()
+	public Set<Post> getPosts()
 	{
 		return posts;
 	}
 	
-	public void setPosts(List<Post> posts)
+	public void setPosts(Set<Post> posts)
 	{
 		this.posts.clear();
 		this.posts.addAll(posts);

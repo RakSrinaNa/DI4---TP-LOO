@@ -5,8 +5,8 @@ import javax.persistence.*;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 /**
  * Created by Thomas Couchoud (MrCraftCod - zerderr@gmail.com) on 05/12/2017.
@@ -26,15 +26,15 @@ public class Post implements Serializable
 	private String content;
 	private String title;
 	private LocalDateTime date;
-	private List<Keyword> keywords;
-	private List<Link> links;
-	private List<Image> images;
+	private Set<Keyword> keywords;
+	private Set<Link> links;
+	private Set<Image> images;
 	
 	public Post()
 	{
-		this.keywords = new ArrayList<>();
-		this.links = new ArrayList<>();
-		this.images = new ArrayList<>();
+		this.keywords = new LinkedHashSet<>();
+		this.links = new LinkedHashSet<>();
+		this.images = new LinkedHashSet<>();
 	}
 	
 	public void addKeyword(Keyword keyword)
@@ -123,40 +123,40 @@ public class Post implements Serializable
 	}
 	
 	@OneToMany(targetEntity = Image.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	public List<Image> getImages()
+	public Set<Image> getImages()
 	{
 		return images;
 	}
 	
-	public void setImages(List<Image> images)
+	public void setImages(Set<Image> images)
 	{
-		List<Image> old = this.images;
+		Set<Image> old = this.images;
 		this.images = images;
 		pcs.firePropertyChange("images", old, images);
 	}
 	
 	@ManyToMany(targetEntity = Keyword.class, fetch = FetchType.EAGER)
-	public List<Keyword> getKeywords()
+	public Set<Keyword> getKeywords()
 	{
 		return keywords;
 	}
 	
-	public void setKeywords(List<Keyword> keywords)
+	public void setKeywords(Set<Keyword> keywords)
 	{
-		List<Keyword> old = this.keywords;
+		Set<Keyword> old = this.keywords;
 		this.keywords = keywords;
 		pcs.firePropertyChange("keywords", old, keywords);
 	}
 	
 	@OneToMany(targetEntity = Link.class, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	public List<Link> getLinks()
+	public Set<Link> getLinks()
 	{
 		return links;
 	}
 	
-	public void setLinks(List<Link> links)
+	public void setLinks(Set<Link> links)
 	{
-		List<Link> old = this.links;
+		Set<Link> old = this.links;
 		this.links = links;
 		pcs.firePropertyChange("links", old, links);
 	}

@@ -184,9 +184,9 @@ public class PostCreateDialog extends Stage
 		return root;
 	}
 	
-	public List<Image> getImages()
+	public Set<Image> getImages()
 	{
-		return imagesText.getText().equals("") ? new ArrayList<>() : Arrays.stream(imagesText.getText().split(" ")).map(Image::new).collect(Collectors.toList());
+		return imagesText.getText().equals("") ? new LinkedHashSet<>() : Arrays.stream(imagesText.getText().split(" ")).map(Image::new).collect(Collectors.toSet());
 	}
 	
 	/**
@@ -199,9 +199,9 @@ public class PostCreateDialog extends Stage
 		return contentText.getText().trim();
 	}
 	
-	public List<Keyword> getKeywords()
+	public Set<Keyword> getKeywords()
 	{
-		ArrayList<Keyword> kw = new ArrayList<>();
+		LinkedHashSet<Keyword> kw = new LinkedHashSet<>();
 		
 		for(String k : keywordsText.getText().split(" "))
 			kw.add(parentController.getKeywords().stream().filter(kk -> kk.is(k)).findFirst().orElseGet(() -> {
@@ -213,9 +213,9 @@ public class PostCreateDialog extends Stage
 		return kw;
 	}
 	
-	public List<Link> getLinks()
+	public Set<Link> getLinks()
 	{
-		return convertStringToURL(pullLinks(linksText.getText())).stream().map(Link::new).collect(Collectors.toList());
+		return convertStringToURL(pullLinks(linksText.getText())).stream().map(Link::new).collect(Collectors.toSet());
 	}
 	
 	private static List<URL> convertStringToURL(List<String> strings)
