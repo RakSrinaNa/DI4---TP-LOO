@@ -1,6 +1,6 @@
 package fr.polytech.hibernate.tp11.view.post.create;
 
-import fr.polytech.hibernate.tp11.Controller;
+import fr.polytech.hibernate.tp11.BlogController;
 import fr.polytech.hibernate.tp11.model.Image;
 import fr.polytech.hibernate.tp11.model.Keyword;
 import fr.polytech.hibernate.tp11.model.Link;
@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  */
 public class PostCreateDialog extends Stage
 {
-	private final Controller parentController;
+	private final BlogController parentBlogController;
 	private final PostCreateDialogController controller;
 	private Post result;
 	private TextArea titleText;
@@ -41,18 +41,18 @@ public class PostCreateDialog extends Stage
 	private TextArea linksText;
 	private TextArea imagesText;
 	
-	public PostCreateDialog(Controller controller)
+	public PostCreateDialog(BlogController blogController)
 	{
-		this(controller, null);
+		this(blogController, null);
 	}
 	
 	/**
 	 * Constructor.
 	 */
-	public PostCreateDialog(Controller parentController, Post initialPost)
+	public PostCreateDialog(BlogController parentBlogController, Post initialPost)
 	{
 		super();
-		this.parentController = parentController;
+		this.parentBlogController = parentBlogController;
 		controller = new PostCreateDialogController(this);
 		if(initialPost == null)
 			initialPost = new Post();
@@ -204,9 +204,9 @@ public class PostCreateDialog extends Stage
 		LinkedHashSet<Keyword> kw = new LinkedHashSet<>();
 		
 		for(String k : keywordsText.getText().split(" "))
-			kw.add(parentController.getKeywords().stream().filter(kk -> kk.is(k)).findFirst().orElseGet(() -> {
+			kw.add(parentBlogController.getKeywords().stream().filter(kk -> kk.is(k)).findFirst().orElseGet(() -> {
 				Keyword kkw = new Keyword(k);
-				parentController.addKeyword(kkw);
+				parentBlogController.addKeyword(kkw);
 				return kkw;
 			}));
 		

@@ -1,6 +1,6 @@
 package fr.polytech.hibernate.tp11.view;
 
-import fr.polytech.hibernate.tp11.Controller;
+import fr.polytech.hibernate.tp11.BlogController;
 import fr.polytech.hibernate.tp11.view.scenes.ApplicationScene;
 import fr.polytech.hibernate.tp11.view.scenes.LoginScene;
 import javafx.application.Application;
@@ -16,7 +16,7 @@ import javafx.stage.Stage;
  */
 public class MainApplication extends Application
 {
-	private Controller controller;
+	private BlogController blogController;
 	
 	public static void main(String[] args)
 	{
@@ -26,12 +26,12 @@ public class MainApplication extends Application
 	@Override
 	public void start(Stage primaryStage) throws Exception
 	{
-		controller = new Controller();
-		controller.populateSome();
+		blogController = new BlogController();
+		blogController.populateSome();
 		
-		LoginScene loginScene = new LoginScene(controller);
+		LoginScene loginScene = new LoginScene(blogController);
 		loginScene.setOnLoggedIn(user -> {
-			ApplicationScene applicationScene = new ApplicationScene(controller, user);
+			ApplicationScene applicationScene = new ApplicationScene(blogController, user);
 			primaryStage.setScene(applicationScene);
 			primaryStage.setResizable(true);
 			Screen screen = Screen.getPrimary();
@@ -46,7 +46,7 @@ public class MainApplication extends Application
 		primaryStage.setTitle("Hibernate");
 		primaryStage.sizeToScene();
 		primaryStage.setResizable(false);
-		primaryStage.setOnCloseRequest(evt -> controller.close());
+		primaryStage.setOnCloseRequest(evt -> blogController.close());
 		primaryStage.show();
 	}
 }

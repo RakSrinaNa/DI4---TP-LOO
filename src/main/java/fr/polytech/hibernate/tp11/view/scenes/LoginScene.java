@@ -1,6 +1,6 @@
 package fr.polytech.hibernate.tp11.view.scenes;
 
-import fr.polytech.hibernate.tp11.Controller;
+import fr.polytech.hibernate.tp11.BlogController;
 import fr.polytech.hibernate.tp11.model.User;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -23,13 +23,13 @@ import java.util.function.Consumer;
  */
 public class LoginScene extends Scene
 {
-	private final Controller controller;
+	private final BlogController blogController;
 	private Consumer<User> onLoggedIn;
 	
-	public LoginScene(Controller controller)
+	public LoginScene(BlogController blogController)
 	{
 		super(new StackPane());
-		this.controller = controller;
+		this.blogController = blogController;
 		this.setRoot(buildContent());
 	}
 	
@@ -51,7 +51,7 @@ public class LoginScene extends Scene
 		
 		Runnable login = () -> {
 			User user;
-			if((user = controller.loginUser(userArea.getText(), passwordArea.getText())) != null)
+			if((user = blogController.loginUser(userArea.getText(), passwordArea.getText())) != null)
 			{
 				if(LoginScene.this.onLoggedIn != null)
 					LoginScene.this.onLoggedIn.accept(user);

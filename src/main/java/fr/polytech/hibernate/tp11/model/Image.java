@@ -24,16 +24,10 @@ public class Image
 	
 	public Image(){}
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public int getID()
+	@Override
+	public String toString()
 	{
-		return ID;
-	}
-	
-	public void setID(int ID)
-	{
-		this.ID = ID;
+		return getPath();
 	}
 	
 	public String getPath()
@@ -46,9 +40,15 @@ public class Image
 		this.path = path;
 	}
 	
-	@Override
-	public String toString()
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public int getID()
 	{
-		return getPath();
+		return ID;
+	}
+	
+	public void setID(int ID)
+	{
+		this.ID = ID;
 	}
 }

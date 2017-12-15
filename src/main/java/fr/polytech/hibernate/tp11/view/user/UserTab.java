@@ -1,6 +1,6 @@
 package fr.polytech.hibernate.tp11.view.user;
 
-import fr.polytech.hibernate.tp11.Controller;
+import fr.polytech.hibernate.tp11.BlogController;
 import fr.polytech.hibernate.tp11.model.User;
 import javafx.scene.control.Tab;
 
@@ -12,9 +12,9 @@ import javafx.scene.control.Tab;
  */
 public class UserTab extends Tab
 {
-	public UserTab(Controller controller, User user)
+	public UserTab(BlogController blogController, User user)
 	{
 		super("Users");
-		this.setContent(new UserTable(controller, user));
+		this.setContent(new UserTable(blogController, user));
 	}
 }

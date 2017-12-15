@@ -1,6 +1,6 @@
 package fr.polytech.hibernate.tp11.view.scenes;
 
-import fr.polytech.hibernate.tp11.Controller;
+import fr.polytech.hibernate.tp11.BlogController;
 import fr.polytech.hibernate.tp11.model.User;
 import fr.polytech.hibernate.tp11.view.user.UserTab;
 import fr.polytech.hibernate.tp11.view.post.PostTab;
@@ -17,13 +17,13 @@ import javafx.scene.layout.StackPane;
  */
 public class ApplicationScene extends Scene
 {
-	private final Controller controller;
+	private final BlogController blogController;
 	private final User user;
 	
-	public ApplicationScene(Controller controller, User user)
+	public ApplicationScene(BlogController blogController, User user)
 	{
 		super(new StackPane());
-		this.controller = controller;
+		this.blogController = blogController;
 		this.user = user;
 		this.setRoot(buildContent());
 	}
@@ -31,8 +31,8 @@ public class ApplicationScene extends Scene
 	private Parent buildContent()
 	{
 		TabPane tabs = new TabPane();
-		tabs.getTabs().addAll(new UserTab(controller, user));
-		tabs.getTabs().addAll(new PostTab(controller, user));
+		tabs.getTabs().addAll(new UserTab(blogController, user));
+		tabs.getTabs().addAll(new PostTab(blogController, user));
 		tabs.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 		return new StackPane(tabs);
 	}

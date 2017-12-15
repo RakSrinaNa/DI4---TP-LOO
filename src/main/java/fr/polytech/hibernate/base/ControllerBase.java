@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Controller base, having basic functions.
+ * BlogController base, having basic functions.
  * <p>
  * Created by Thomas Couchoud (MrCraftCod - zerderr@gmail.com) on 09/11/2017.
  *
@@ -54,7 +54,13 @@ public abstract class ControllerBase
 	 */
 	public <T> List<T> getElements(Class<T> klass)
 	{
-		return session.createQuery(session.getCriteriaBuilder().createQuery(klass)).getResultList();
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+		CriteriaQuery<T> classQuery = criteriaBuilder.createQuery(klass);
+		
+		Root<T> root = classQuery.from(klass);
+		
+		CriteriaQuery<T> query = classQuery.select(root);
+		return session.createQuery(query).getResultList();
 	}
 	
 	/**

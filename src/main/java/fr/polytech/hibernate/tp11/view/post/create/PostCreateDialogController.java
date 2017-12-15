@@ -6,7 +6,7 @@ import javafx.scene.control.Alert;
 import java.time.LocalDateTime;
 
 /**
- * Controller for the employee creation dialog.
+ * BlogController for the employee creation dialog.
  * <p>
  * Created by Thomas Couchoud (MrCraftCod - zerderr@gmail.com) on 27/04/2017.
  *

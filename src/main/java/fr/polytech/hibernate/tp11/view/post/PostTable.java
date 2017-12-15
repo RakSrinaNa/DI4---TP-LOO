@@ -1,6 +1,6 @@
 package fr.polytech.hibernate.tp11.view.post;
 
-import fr.polytech.hibernate.tp11.Controller;
+import fr.polytech.hibernate.tp11.BlogController;
 import fr.polytech.hibernate.tp11.model.Keyword;
 import fr.polytech.hibernate.tp11.model.Post;
 import fr.polytech.hibernate.tp11.model.User;
@@ -32,7 +32,7 @@ class PostTable extends SortedTableView<Post>
 {
 	private final SimpleObjectProperty<Predicate<Post>> filterRule;
 	
-	PostTable(Controller controller, User user, ObjectProperty<LocalDate> dateProperty, ReadOnlyObjectProperty<Keyword> keywordProperty)
+	PostTable(BlogController blogController, User user, ObjectProperty<LocalDate> dateProperty, ReadOnlyObjectProperty<Keyword> keywordProperty)
 	{
 		super();
 		setEditable(false);
@@ -176,9 +176,9 @@ class PostTable extends SortedTableView<Post>
 					MenuItem menuModify = new MenuItem("Modify post");
 					MenuItem menuDelete = new MenuItem("Delete post");
 					
-					menuMore.setOnAction(evt1 -> controller.infosPost(this, row.getItem()));
-					menuModify.setOnAction(evt1 -> controller.modifyPost(evt, row.getItem()));
-					menuDelete.setOnAction(evt1 -> controller.deletePost(row.getItem()));
+					menuMore.setOnAction(evt1 -> blogController.infosPost(this, row.getItem()));
+					menuModify.setOnAction(evt1 -> blogController.modifyPost(evt, row.getItem()));
+					menuDelete.setOnAction(evt1 -> blogController.deletePost(row.getItem()));
 					
 					contextMenu.getItems().add(menuMore);
 					if(user.equals(row.getItem().getAuthor()))
@@ -194,7 +194,7 @@ class PostTable extends SortedTableView<Post>
 		
 		//noinspection unchecked
 		getColumns().addAll(authorColumn, titleColumn, contentColumn, dateColumn, keywordsColumn, linksColumn, imagesColumn);
-		setList(controller.getPosts());
+		setList(blogController.getPosts());
 		Platform.runLater(this::resizeContent);
 	}
 	

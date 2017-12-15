@@ -1,6 +1,6 @@
 package fr.polytech.hibernate.tp11.view.user;
 
-import fr.polytech.hibernate.tp11.Controller;
+import fr.polytech.hibernate.tp11.BlogController;
 import fr.polytech.hibernate.tp11.model.Address;
 import fr.polytech.hibernate.tp11.model.User;
 import fr.polytech.hibernate.tp11.view.utils.SortedTableView;
@@ -24,7 +24,7 @@ class UserTable extends SortedTableView<User>
 {
 	private static final Pattern VALID_EMAIL = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)])"); //http://www.ietf.org/rfc/rfc5322.txt
 	
-	UserTable(Controller controller, User user)
+	UserTable(BlogController blogController, User user)
 	{
 		super();
 		setEditable(true);
@@ -53,7 +53,7 @@ class UserTable extends SortedTableView<User>
 			if(evt.getRowValue().equals(user) && evt.getNewValue() != null && !evt.getNewValue().equals(""))
 			{
 				evt.getRowValue().setUsername(evt.getNewValue());
-				controller.onUserChanged(evt.getRowValue());
+				blogController.onUserChanged(evt.getRowValue());
 			}
 			else //Refresh window
 			{
@@ -82,7 +82,7 @@ class UserTable extends SortedTableView<User>
 			if(evt.getRowValue().equals(user) && evt.getNewValue() != null && !evt.getNewValue().equals(""))
 			{
 				evt.getRowValue().setFirstname(evt.getNewValue());
-				controller.onUserChanged(evt.getRowValue());
+				blogController.onUserChanged(evt.getRowValue());
 			}
 			else //Refresh window
 			{
@@ -111,7 +111,7 @@ class UserTable extends SortedTableView<User>
 			if(evt.getRowValue().equals(user) && evt.getNewValue() != null && !evt.getNewValue().equals(""))
 			{
 				evt.getRowValue().setLastname(evt.getNewValue());
-				controller.onUserChanged(evt.getRowValue());
+				blogController.onUserChanged(evt.getRowValue());
 			}
 			else //Refresh window
 			{
@@ -156,7 +156,7 @@ class UserTable extends SortedTableView<User>
 			if(evt.getNewValue() != null && evt.getRowValue().equals(user) && !evt.getNewValue().equals("") && VALID_EMAIL.matcher(evt.getNewValue()).matches())
 			{
 				evt.getRowValue().setMail(evt.getNewValue());
-				controller.onUserChanged(evt.getRowValue());
+				blogController.onUserChanged(evt.getRowValue());
 			}
 			else //Refresh window
 			{
@@ -185,7 +185,7 @@ class UserTable extends SortedTableView<User>
 			if(evt.getNewValue() != null && evt.getRowValue().equals(user) && !evt.getNewValue().equals(""))
 			{
 				evt.getRowValue().setPassword(evt.getNewValue());
-				controller.onUserChanged(evt.getRowValue());
+				blogController.onUserChanged(evt.getRowValue());
 			}
 			else //Refresh window
 			{
@@ -196,7 +196,7 @@ class UserTable extends SortedTableView<User>
 		
 		//noinspection unchecked
 		getColumns().addAll(usernameColumn, firstnameColumn, lastnameColumn, addressColumn, mailColumn, passwordColumn);
-		setList(controller.getUsers());
+		setList(blogController.getUsers());
 		Platform.runLater(this::resizeContent);
 	}
 	
