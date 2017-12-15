@@ -1,6 +1,6 @@
 package fr.polytech.hibernate.tp11.view.post;
 
-import fr.polytech.hibernate.tp11.Controller;
+import fr.polytech.hibernate.tp11.BlogController;
 import fr.polytech.hibernate.tp11.model.Keyword;
 import fr.polytech.hibernate.tp11.model.Post;
 import fr.polytech.hibernate.tp11.model.User;
@@ -21,7 +21,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.regex.Pattern;
 
 /**
  * Created by Thomas Couchoud (MrCraftCod - zerderr@gmail.com) on 05/12/2017.
@@ -31,11 +30,9 @@ import java.util.regex.Pattern;
  */
 class PostTable extends SortedTableView<Post>
 {
-	private static final Pattern VALID_EMAIL = Pattern.compile("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)])"); //http://www.ietf.org/rfc/rfc5322.txt
-	
 	private final SimpleObjectProperty<Predicate<Post>> filterRule;
 	
-	PostTable(Controller controller, User user, ObjectProperty<LocalDate> dateProperty, ReadOnlyObjectProperty<Keyword> keywordProperty)
+	PostTable(BlogController blogController, User user, ObjectProperty<LocalDate> dateProperty, ReadOnlyObjectProperty<Keyword> keywordProperty)
 	{
 		super();
 		setEditable(false);
@@ -179,9 +176,9 @@ class PostTable extends SortedTableView<Post>
 					MenuItem menuModify = new MenuItem("Modify post");
 					MenuItem menuDelete = new MenuItem("Delete post");
 					
-					menuMore.setOnAction(evt1 -> controller.infosPost(this, row.getItem()));
-					menuModify.setOnAction(evt1 -> controller.modifyPost(evt, row.getItem()));
-					menuDelete.setOnAction(evt1 -> controller.deletePost(row.getItem()));
+					menuMore.setOnAction(evt1 -> blogController.infosPost(this, row.getItem()));
+					menuModify.setOnAction(evt1 -> blogController.modifyPost(evt, row.getItem()));
+					menuDelete.setOnAction(evt1 -> blogController.deletePost(row.getItem()));
 					
 					contextMenu.getItems().add(menuMore);
 					if(user.equals(row.getItem().getAuthor()))
@@ -197,7 +194,7 @@ class PostTable extends SortedTableView<Post>
 		
 		//noinspection unchecked
 		getColumns().addAll(authorColumn, titleColumn, contentColumn, dateColumn, keywordsColumn, linksColumn, imagesColumn);
-		setList(controller.getPosts());
+		setList(blogController.getPosts());
 		Platform.runLater(this::resizeContent);
 	}
 	

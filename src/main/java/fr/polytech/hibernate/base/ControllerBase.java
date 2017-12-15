@@ -18,6 +18,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * BlogController base, having basic functions.
+ * <p>
  * Created by Thomas Couchoud (MrCraftCod - zerderr@gmail.com) on 09/11/2017.
  *
  * @author Thomas Couchoud
@@ -29,6 +31,11 @@ public abstract class ControllerBase
 	private final Session session;
 	private final SessionFactory sessionFactory;
 	
+	/**
+	 * Constructor.
+	 *
+	 * @throws IllegalStateException If the connection couldn't be made.
+	 */
 	protected ControllerBase() throws IllegalStateException
 	{
 		sessionFactory = getSessionFactory();
@@ -37,45 +44,55 @@ public abstract class ControllerBase
 		session = sessionFactory.openSession();
 	}
 	
+	/**
+	 * Get all the elements of a class.
+	 *
+	 * @param klass The class to get.
+	 * @param <T>   The class to get.
+	 *
+	 * @return A list of all the elements of the class.
+	 */
 	public <T> List<T> getElements(Class<T> klass)
 	{
-		return session.createCriteria(klass).list();
+		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+		CriteriaQuery<T> classQuery = criteriaBuilder.createQuery(klass);
+		
+		Root<T> root = classQuery.from(klass);
+		
+		CriteriaQuery<T> query = classQuery.select(root);
+		return session.createQuery(query).getResultList();
 	}
 	
-	public void persistObject(Object persistant)
+	/**
+	 * Persist an object in the database.
+	 *
+	 * @param persistent The object to persist.
+	 */
+	public void persistObject(Object persistent)
 	{
-		if(persistant == null)
+		if(persistent == null)
 			return;
 		Transaction tr = session.getTransaction();
 		try
 		{
 			tr.begin();
 			
-			session.saveOrUpdate(persistant);
+			session.saveOrUpdate(persistent);
 			
 			tr.commit();
 		}
 		catch(Exception e)
 		{
-			System.out.println("ERROR: " + e .getMessage());
+			System.out.println("ERROR: " + e.getMessage());
 			tr.rollback();
 		}
 	}
 	
-	public <T> List<T> getAllObject(Class<T> klass)
-	{
-		List<T> list = new ArrayList<>();
-		try
-		{
-			list.addAll(session.createCriteria(klass).list());
-		}
-		catch(Exception e)
-		{
-			System.out.println("ERROR: " + e .getMessage());
-		}
-		return list;
-	}
-	
+	/**
+	 * Update a persisted object.
+	 *
+	 * @param o The object to update.
+	 */
 	protected void updateObject(Object o)
 	{
 		try
@@ -93,6 +110,11 @@ public abstract class ControllerBase
 		}
 	}
 	
+	/**
+	 * Remove an object from the database.
+	 *
+	 * @param o The object to remove.
+	 */
 	protected void deleteObject(Object o)
 	{
 		try
@@ -110,6 +132,12 @@ public abstract class ControllerBase
 		}
 	}
 	
+	/**
+	 * Make changes in a transaction.
+	 *
+	 * @param r The changes to do.
+	 */
+	@SuppressWarnings("WeakerAccess")
 	public void makeChanges(Runnable r)
 	{
 		try
@@ -127,6 +155,17 @@ public abstract class ControllerBase
 		}
 	}
 	
+	/**
+	 * Find elements matching a = condition.
+	 *
+	 * @param classType The class to find.
+	 * @param column    The name of the column to apply the condition.
+	 * @param value     The value to match.
+	 * @param <T>       The class to find.
+	 *
+	 * @return The results.
+	 */
+	@SuppressWarnings("WeakerAccess")
 	public <T> List<T> findEqual(Class<T> classType, String column, Object value)
 	{
 		ArrayList<Pair<String, Object>> constraints = new ArrayList<>();
@@ -134,6 +173,16 @@ public abstract class ControllerBase
 		return findEqual(classType, constraints);
 	}
 	
+	/**
+	 * Find elements matching several = condition.
+	 *
+	 * @param classType   The class to find.
+	 * @param constraints The constraints to apply. The key is the column name, the key the value to match.
+	 * @param <T>         The class to find.
+	 *
+	 * @return The results.
+	 */
+	@SuppressWarnings("WeakerAccess")
 	public <T> List<T> findEqual(Class<T> classType, Collection<Pair<String, Object>> constraints)
 	{
 		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -146,6 +195,17 @@ public abstract class ControllerBase
 		return session.createQuery(query).getResultList();
 	}
 	
+	/**
+	 * Find elements matching a >= condition.
+	 *
+	 * @param classType The class to find.
+	 * @param column    The name of the column to apply the condition.
+	 * @param value     The value be greater to or equal.
+	 * @param <T>       The class to find.
+	 *
+	 * @return The results.
+	 */
+	@SuppressWarnings("WeakerAccess")
 	public <T> List<T> findGreaterOrEqual(Class<T> classType, String column, Number value)
 	{
 		CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
@@ -157,6 +217,17 @@ public abstract class ControllerBase
 		return session.createQuery(query).getResultList();
 	}
 	
+	/**
+	 * Get all the classes inside a package.
+	 *
+	 * @param packageName The name of the package.
+	 *
+	 * @return The classes.
+	 *
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
 	private List<Class> getClasses(String packageName) throws ClassNotFoundException, IOException, URISyntaxException
 	{
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -176,25 +247,47 @@ public abstract class ControllerBase
 		return classes;
 	}
 	
+	/**
+	 * Find the classes of a package inside a directory.
+	 *
+	 * @param directory   The directory to search in (recursively).
+	 * @param packageName The name of the package.
+	 *
+	 * @return The classes found.
+	 *
+	 * @throws ClassNotFoundException
+	 */
 	private List<Class> findClasses(File directory, String packageName) throws ClassNotFoundException
 	{
 		List<Class> classes = new ArrayList<>();
-		if (!directory.exists())
+		if(!directory.exists())
 			return classes;
-		for (File file : directory.listFiles())
-			if (file.isDirectory())
+		for(File file : directory.listFiles())
+			if(file.isDirectory())
 				classes.addAll(findClasses(file, packageName + "." + file.getName()));
-			else if (file.getName().endsWith(".class"))
+			else if(file.getName().endsWith(".class"))
 				classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - ".class".length())));
 		return classes;
 	}
 	
+	/**
+	 * Closes the controller.
+	 */
 	public void close()
 	{
 		session.close();
 		sessionFactory.close();
 	}
 	
+	/**
+	 * Get all the classes annotated with @Controlled.
+	 *
+	 * @return The classes found.
+	 *
+	 * @throws URISyntaxException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	private Iterable<Class> getAnnotatedClasses() throws URISyntaxException, IOException, ClassNotFoundException
 	{
 		List<Class> classes = getClasses(getPackage());
@@ -205,8 +298,18 @@ public abstract class ControllerBase
 		return classes;
 	}
 	
+	/**
+	 * Get the name of the package where to find the model.
+	 *
+	 * @return The package name.
+	 */
 	protected abstract String getPackage();
 	
+	/**
+	 * Build the session factory for hibernate.
+	 *
+	 * @return The session factory.
+	 */
 	private SessionFactory getSessionFactory()
 	{
 		try

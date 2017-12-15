@@ -1,6 +1,6 @@
 package fr.polytech.hibernate.tp11.view.post;
 
-import fr.polytech.hibernate.tp11.Controller;
+import fr.polytech.hibernate.tp11.BlogController;
 import fr.polytech.hibernate.tp11.model.Keyword;
 import fr.polytech.hibernate.tp11.model.User;
 import fr.polytech.hibernate.tp11.view.utils.RefreshableListCell;
@@ -20,13 +20,13 @@ import javafx.util.Callback;
  */
 public class PostTab extends Tab
 {
-	public PostTab(Controller controller, User user)
+	public PostTab(BlogController blogController, User user)
 	{
 		super("Posts");
 		HBox controls = new HBox();
 		
 		Button newPost = new Button("New post");
-		newPost.setOnAction(evt -> controller.createPost(evt, user));
+		newPost.setOnAction(evt -> blogController.createPost(evt, user));
 		
 		DatePicker postDate = new DatePicker();
 		postDate.setMaxWidth(Double.MAX_VALUE);
@@ -51,12 +51,12 @@ public class PostTab extends Tab
 				evt.consume();
 			}
 		});
-		keywordFilter.setItems(controller.getKeywords());
+		keywordFilter.setItems(blogController.getKeywords());
 		
 		controls.getChildren().addAll(newPost, postDate, keywordFilter);
 		
 		VBox root = new VBox();
-		PostTable postTable = new PostTable(controller, user, postDate.valueProperty(), keywordFilter.getSelectionModel().selectedItemProperty());
+		PostTable postTable = new PostTable(blogController, user, postDate.valueProperty(), keywordFilter.getSelectionModel().selectedItemProperty());
 		root.getChildren().addAll(postTable, controls);
 		
 		HBox.setHgrow(newPost, Priority.SOMETIMES);

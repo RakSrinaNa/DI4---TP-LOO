@@ -19,28 +19,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * BlogController for the blog.
+ * <p>
  * Created by Thomas Couchoud (MrCraftCod - zerderr@gmail.com) on 05/12/2017.
  *
  * @author Thomas Couchoud
  * @since 2017-12-05
  */
-public class Controller extends ControllerBase
+public class BlogController extends ControllerBase
 {
 	private final ObservableList<User> users;
 	private final ObservableList<Post> posts;
 	private final ObservableList<Keyword> keywords;
 	
-	public Controller() throws IllegalStateException
+	/**
+	 * Constructor.
+	 *
+	 * @throws IllegalStateException
+	 */
+	public BlogController() throws IllegalStateException
 	{
 		super();
 		users = FXCollections.observableArrayList();
-		users.addAll(getAllObject(User.class));
+		users.addAll(getElements(User.class));
 		posts = FXCollections.observableArrayList();
-		posts.addAll(getAllObject(Post.class));
+		posts.addAll(getElements(Post.class));
 		keywords = FXCollections.observableArrayList();
-		keywords.addAll(getAllObject(Keyword.class));
+		keywords.addAll(getElements(Keyword.class));
 	}
 	
+	/**
+	 * Add some sample data into the database.
+	 */
 	public void populateSome()
 	{
 		Address a1 = new Address("16 Rue Jean Test", "Ville1", "Poitou-Charentes", "12345", "France");
@@ -52,28 +62,56 @@ public class Controller extends ControllerBase
 		addUser(u2);
 	}
 	
+	/**
+	 * Add a user.
+	 *
+	 * @param user The user to add.
+	 */
 	private void addUser(User user)
 	{
 		persistObject(user);
 		users.add(user);
 	}
 	
+	/**
+	 * Add a post.
+	 *
+	 * @param post The post to add.
+	 */
 	private void addPost(Post post)
 	{
 		persistObject(post);
 		posts.add(post);
 	}
 	
+	/**
+	 * Modify a user.
+	 *
+	 * @param user The user modified.
+	 */
 	public void onUserChanged(User user)
 	{
 		updateObject(user);
 	}
 	
+	/**
+	 * Modify a post.
+	 *
+	 * @param post The post modified.
+	 */
 	public void onPostChanged(Post post)
 	{
 		updateObject(post);
 	}
 	
+	/**
+	 * Get a user with its username and password.
+	 *
+	 * @param username The username.
+	 * @param password The password.
+	 *
+	 * @return The logged user, or null.
+	 */
 	public User loginUser(String username, String password)
 	{
 		ArrayList<Pair<String, Object>> constraints = new ArrayList<>();
@@ -83,14 +121,23 @@ public class Controller extends ControllerBase
 		return users.size() > 0 ? users.get(0) : null;
 	}
 	
+	/**
+	 * Delete a post.
+	 *
+	 * @param post The post to delete.
+	 */
 	public void deletePost(Post post)
 	{
-		//post.getAuthor().removePost(post);
 		posts.remove(post);
 		deleteObject(post);
-		//TODO: Need to detach?
 	}
 	
+	/**
+	 * Create a new post.
+	 *
+	 * @param event The event that lead to it.
+	 * @param user  The user creating the post.
+	 */
 	public void createPost(ActionEvent event, User user)
 	{
 		PostCreateDialog dialog = new PostCreateDialog(this);
@@ -98,28 +145,38 @@ public class Controller extends ControllerBase
 		dialog.initModality(Modality.APPLICATION_MODAL);
 		dialog.showAndWait();
 		Post result = dialog.getResult();
-		if(result != null) //If an employee was created
+		if(result != null) //If a post was created
 		{
-		result.setAuthor(user);
+			result.setAuthor(user);
 			user.addPost(result);
 			updateObject(user);
 			posts.add(result);
 		}
 	}
 	
+	/**
+	 * Modify a post.
+	 *
+	 * @param event The event that lead to it.
+	 * @param post  The post to modify.
+	 */
 	public void modifyPost(Event event, Post post)
 	{
 		PostCreateDialog dialog = new PostCreateDialog(this, post);
-		dialog.initOwner(((Node)event.getSource()).getScene().getWindow());
+		dialog.initOwner(((Node) event.getSource()).getScene().getWindow());
 		dialog.initModality(Modality.APPLICATION_MODAL);
 		dialog.showAndWait();
 		Post result = dialog.getResult();
-		if(result != null) //If an employee was created
-		{
+		if(result != null) //if a post was modified
 			updateObject(post);
-		}
 	}
 	
+	/**
+	 * Displays the information on a post.
+	 *
+	 * @param parent The parent of the event.
+	 * @param post   The post to display.
+	 */
 	public void infosPost(Node parent, Post post)
 	{
 		PostInfosDialog dialog = new PostInfosDialog(post);
@@ -128,30 +185,50 @@ public class Controller extends ControllerBase
 		dialog.showAndWait();
 	}
 	
+	/**
+	 * Add a keyword to the database.
+	 *
+	 * @param keyword The keyword to add.
+	 */
 	public void addKeyword(Keyword keyword)
 	{
 		persistObject(keyword);
 		keywords.add(keyword);
 	}
 	
+	/**
+	 * Get all the keywords.
+	 *
+	 * @return The keywords.
+	 */
 	public ObservableList<Keyword> getKeywords()
 	{
 		return keywords;
-	}
-	
-	public ObservableList<Post> getPosts()
-	{
-		return posts;
-	}
-	
-	public ObservableList<User> getUsers()
-	{
-		return users;
 	}
 	
 	@Override
 	protected String getPackage()
 	{
 		return "fr.polytech.hibernate.tp11.model";
+	}
+	
+	/**
+	 * Get all the posts.
+	 *
+	 * @return The posts.
+	 */
+	public ObservableList<Post> getPosts()
+	{
+		return posts;
+	}
+	
+	/**
+	 * Get all the users.
+	 *
+	 * @return The users.
+	 */
+	public ObservableList<User> getUsers()
+	{
+		return users;
 	}
 }

@@ -27,6 +27,12 @@ public class Link
 	
 	public Link(){}
 	
+	@Override
+	public String toString()
+	{
+		return "{" + "displayName='" + displayName + '\'' + ", url=" + url + '}';
+	}
+	
 	public String getDisplayName()
 	{
 		return displayName;
@@ -57,11 +63,5 @@ public class Link
 	public void setUrl(URL url)
 	{
 		this.url = url;
-	}
-	
-	@Override
-	public String toString()
-	{
-		return "{" + "displayName='" + displayName + '\'' + ", url=" + url + '}';
 	}
 }
