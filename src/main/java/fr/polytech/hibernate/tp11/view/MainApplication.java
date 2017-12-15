@@ -4,9 +4,15 @@ import fr.polytech.hibernate.tp11.BlogController;
 import fr.polytech.hibernate.tp11.view.scenes.ApplicationScene;
 import fr.polytech.hibernate.tp11.view.scenes.LoginScene;
 import javafx.application.Application;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 
 /**
  * Created by Thomas Couchoud (MrCraftCod - zerderr@gmail.com) on 05/12/2017.
@@ -42,11 +48,42 @@ public class MainApplication extends Application
 			primaryStage.setHeight(bounds.getHeight());
 			primaryStage.setMaximized(true);
 		});
+		primaryStage.getIcons().add(getIcon());
 		primaryStage.setScene(loginScene);
-		primaryStage.setTitle("Hibernate");
+		primaryStage.setMinHeight(200);
+		primaryStage.setMinWidth(200);
+		primaryStage.setTitle("Blogos");
 		primaryStage.sizeToScene();
 		primaryStage.setResizable(false);
 		primaryStage.setOnCloseRequest(evt -> blogController.close());
 		primaryStage.show();
+	}
+	
+	private Image getIcon()
+	{
+		try
+		{
+			return SwingFXUtils.toFXImage(resizeBufferedImage(ImageIO.read(getResource("icon.png")), 256, 256), null);
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private URL getResource(String path)
+	{
+		return MainApplication.class.getResource("/jfx/" + path);
+	}
+	
+	private static BufferedImage resizeBufferedImage(BufferedImage image, float width, float height)
+	{
+		int baseWidth = image.getWidth(), baseHeight = image.getHeight();
+		float ratio = baseWidth > baseHeight ? width / baseWidth : height / baseHeight;
+		java.awt.Image tmp = image.getScaledInstance((int) (ratio * baseWidth), (int) (ratio * baseHeight), BufferedImage.SCALE_SMOOTH);
+		BufferedImage buffered = new BufferedImage((int) (ratio * baseWidth), (int) (ratio * baseHeight), BufferedImage.TYPE_INT_ARGB);
+		buffered.getGraphics().drawImage(tmp, 0, 0, null);
+		return buffered;
 	}
 }
