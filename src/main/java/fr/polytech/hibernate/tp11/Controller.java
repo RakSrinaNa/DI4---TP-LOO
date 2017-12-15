@@ -34,11 +34,11 @@ public class Controller extends ControllerBase
 	{
 		super();
 		users = FXCollections.observableArrayList();
-		users.addAll(getAllObject(User.class));
+		users.addAll(getElements(User.class));
 		posts = FXCollections.observableArrayList();
-		posts.addAll(getAllObject(Post.class));
+		posts.addAll(getElements(Post.class));
 		keywords = FXCollections.observableArrayList();
-		keywords.addAll(getAllObject(Keyword.class));
+		keywords.addAll(getElements(Keyword.class));
 	}
 	
 	public void populateSome()
