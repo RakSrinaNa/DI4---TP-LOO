@@ -7,7 +7,8 @@ import fr.polytech.hibernate.tp11.view.post.PostTab;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
 
 /**
  * Created by Thomas Couchoud (MrCraftCod - zerderr@gmail.com) on 08/12/2017.

@@ -50,7 +50,7 @@ public class MainApplication extends Application
 			primaryStage.setHeight(bounds.getHeight());
 			primaryStage.setMaximized(true);
 		});
-		primaryStage.getIcons().add(getIcon());
+		primaryStage.getIcons().add(getIcon("icon.png"));
 		primaryStage.setScene(loginScene);
 		primaryStage.setTitle("Blogos");
 		primaryStage.sizeToScene();
@@ -59,11 +59,11 @@ public class MainApplication extends Application
 		primaryStage.show();
 	}
 	
-	private Image getIcon()
+	public static Image getIcon(String name)
 	{
 		try
 		{
-			return SwingFXUtils.toFXImage(resizeBufferedImage(ImageIO.read(getResource("icon.png")), 256, 256), null);
+			return SwingFXUtils.toFXImage(resizeBufferedImage(ImageIO.read(getResource(name)), 256, 256), null);
 		}
 		catch(IOException e)
 		{
@@ -72,7 +72,7 @@ public class MainApplication extends Application
 		return null;
 	}
 	
-	private URL getResource(String path)
+	private static URL getResource(String path)
 	{
 		return MainApplication.class.getResource("/jfx/" + path);
 	}

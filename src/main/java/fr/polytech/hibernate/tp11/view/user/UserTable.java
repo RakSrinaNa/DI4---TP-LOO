@@ -3,6 +3,7 @@ package fr.polytech.hibernate.tp11.view.user;
 import fr.polytech.hibernate.tp11.BlogController;
 import fr.polytech.hibernate.tp11.model.Address;
 import fr.polytech.hibernate.tp11.model.User;
+import fr.polytech.hibernate.tp11.view.MainApplication;
 import fr.polytech.hibernate.tp11.view.utils.SortedTableView;
 import fr.polytech.hibernate.tp11.view.utils.StringTextFieldTableCell;
 import javafx.application.Platform;
@@ -12,6 +13,7 @@ import javafx.beans.property.adapter.JavaBeanObjectPropertyBuilder;
 import javafx.beans.property.adapter.JavaBeanStringPropertyBuilder;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.layout.*;
 import java.util.regex.Pattern;
 
 /**
@@ -28,6 +30,8 @@ class UserTable extends SortedTableView<User>
 	{
 		super();
 		setEditable(true);
+		getStylesheets().add("/jfx/table.css");
+		setBackground(new Background(new BackgroundImage(MainApplication.getIcon("background.png"), BackgroundRepeat.ROUND, BackgroundRepeat.ROUND, BackgroundPosition.CENTER, BackgroundSize.DEFAULT)));
 		
 		int colCount = 6;
 		int padding = 2;
